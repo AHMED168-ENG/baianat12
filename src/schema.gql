@@ -1,0 +1,232 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type UserRequest {
+  id: String!
+  to: String!
+  from: String!
+  requestUser: User!
+}
+
+type UserMessage {
+  id: String!
+  message: String!
+  from: String!
+  to: String!
+}
+
+type User {
+  """id"""
+  id: String!
+  name: String!
+  email: String!
+  password: String!
+  age: Int
+  addres: String
+  image: String!
+  roles: String
+  isAdmin: Boolean!
+  isActive: Boolean!
+  userRequest: [UserRequest!]!
+  fromMessage: [UserMessage!]!
+  toMessage: [UserMessage!]!
+}
+
+type PostReactionModel {
+  id: String!
+  postId: String!
+  userId: String!
+  type: String!
+  PostReactionPost: PostModel!
+}
+
+type PostModel {
+  id: String!
+  post: String!
+  image: String
+  userId: String!
+  postUser: User!
+  postComments: [PostCommectModel!]!
+  PostReaction: [PostReactionModel!]!
+}
+
+type PostCommectModel {
+  id: String!
+  postId: String!
+  userId: String!
+  comment: String!
+  commentPost: PostModel!
+}
+
+type UserFollowers {
+  id: String!
+  userId: String!
+  follower: String!
+  followerData: User!
+}
+
+type ConversationModel {
+  id: String!
+  from: String!
+  to: String!
+  conversation_user_from: User!
+  conversation_user_to: User!
+}
+
+type Query {
+  findAllUser: [User!]!
+  findOneUser(id: String!): User!
+  findAllPosts(userId: String!): [PostModel!]!
+  findOnePost(id: String!): PostModel!
+  findAllComment(postId: String!): [PostCommectModel!]!
+  findOneComment(id: String!): PostCommectModel!
+  AllReaction(postId: String!): [PostReactionModel!]!
+  findAllfollowers: [UserFollowers!]!
+  findAllRequests: [UserRequest!]!
+}
+
+type Mutation {
+  uploadFile(file: [Upload!]!): Boolean!
+  ceateUser(createUserDto: CreateUserDto!): User!
+  updateUser(id: String!, updateUserDto: UpdateUserInput!): User!
+  updateMyAccountInput(updateMyAccountInput: UpdateMyAccountInput!): User!
+  removeUser(id: String!): Boolean!
+  signIn(signInUser: signInUser!): String!
+  signUp(signUpUser: SignUpUser!): User!
+  resetPassword(id: String!, resetPassword: ResetPassword!): String!
+  CreatePost(createPostDto: CreatePostDto!): PostModel!
+  updatePost(updatePostDto: UpdatePostDto!): PostModel!
+  removePost(id: String!): Float!
+  createComment(createPostCommectDto: CreatePostCommectDto!): PostCommectModel!
+  updateComment(id: String!, updatePostCommectDto: UpdatePostCommectDto!): PostCommectModel!
+  removeComment(id: String!): Float!
+  createPostReaction(createPostReactionInput: CreatePostReactionInput!): PostReactionModel!
+  updatePostReaction(updatePostReactionInput: UpdatePostReactionInput!): [PostReactionModel!]!
+  removePostReaction(postId: String!): Boolean!
+  addRequest(to: String!): UserRequest!
+  removeRequest(frindId: String!): Float!
+  acceptRequest(frindId: String!): UserFollowers!
+  unFollow(frindId: String!): Float!
+  createConversation(createConversationInput: CreateConversationInput!): Boolean!
+  findAllConversationWithUserWithLastMessage(From: String!): [ConversationModel!]!
+  removeConversation(id: String!): ConversationModel!
+  createUserMessage(createUserMessageInput: CreateUserMessageInput!): UserMessage!
+  findAllUserMessage(MyMessagesWithUser: MyMessagesWithUser!): [UserMessage!]!
+  updateUserMessage(id: String!, updateUserMessageInput: UpdateUserMessageInput!): Boolean!
+  removeUserMessage(id: String!): Boolean!
+}
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
+
+input CreateUserDto {
+  name: String!
+  email: String!
+  password: String!
+  age: Float!
+  isAdmin: Boolean
+  addres: Roles!
+  image: String
+  isActive: Boolean
+}
+
+enum Roles {
+  Admin
+  User
+}
+
+input UpdateUserInput {
+  name: String
+  email: String
+  age: Int
+  addres: String
+  image: String
+  isAdmin: Boolean
+  isActive: Boolean
+}
+
+input UpdateMyAccountInput {
+  name: String
+  email: String
+  age: Int
+  addres: String
+  image: String
+}
+
+input signInUser {
+  email: String!
+  password: String!
+}
+
+input SignUpUser {
+  name: String!
+  email: String!
+  password: String!
+  age: Float!
+  addres: String!
+  image: String
+}
+
+input ResetPassword {
+  oldPassword: String!
+  newPassword: String!
+  confirmPassword: String!
+}
+
+input CreatePostDto {
+  post: String!
+  image: String
+}
+
+input UpdatePostDto {
+  post: String!
+  image: String
+  postId: String!
+}
+
+input CreatePostCommectDto {
+  comment: String!
+  postId: String!
+}
+
+input UpdatePostCommectDto {
+  comment: String!
+}
+
+input CreatePostReactionInput {
+  postId: String!
+  type: String!
+}
+
+input UpdatePostReactionInput {
+  postId: String!
+  type: String!
+}
+
+input CreateConversationInput {
+  from: String!
+  to: String!
+}
+
+input CreateUserMessageInput {
+  message: String!
+  to: String!
+}
+
+input MyMessagesWithUser {
+  to: String!
+  order: String!
+}
+
+input UpdateUserMessageInput {
+  message: String!
+}
+
+type Subscription {
+  addRequestSockit(frindId: String!): String!
+  removeRequestSockit(frindId: String!): String!
+  unFollowSockit(frindId: String!): String!
+  acceptRequestSockit(frindId: String!): String!
+  sendMessageNotification(frindId: String!): UserMessage!
+}
